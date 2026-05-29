@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalcNotas — Calculadora de Notas Universitaria</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-mark">CN</span>
+                <span class="logo-text">CalcNotas</span>
+            </div>
+            <button class="btn-print" onclick="window.print()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 6 2 18 2 18 9" />
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                    <rect x="6" y="14" width="12" height="8" />
+                </svg>
+                Guardar PDF
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge">Proyecto Final · Introducción a Sistemas I</div>
+        <h1 class="hero-title">Calculá tus<br /><span class="accent">notas finales</span><br />sin estrés.</h1>
+        <p class="hero-desc">Ingresá parciales, actividades y examen. CalcNotas te dice si aprobás — o cuánto necesitás
+            en el examen final.</p>
+        <div class="hero-cards">
+            <div class="preview-card preview-card--green">
+                <div class="pc-label">Cálculo I</div>
+                <div class="pc-nota">74.5</div>
+                <div class="pc-breakdown">P1 12 · P2 13 · Act 32 · Examen 17.5</div>
+                <span class="pc-badge pc-badge--green">✓ Aprobado</span>
+            </div>
+            <div class="preview-card preview-card--yellow">
+                <div class="pc-label">Física II</div>
+                <div class="pc-nota">?</div>
+                <div class="pc-breakdown">Zona: 44/65 pts · Necesita examen</div>
+                <span class="pc-badge pc-badge--yellow">Examen sin ingresar</span>
+            </div>
+            <div class="preview-card preview-card--red">
+                <div class="pc-label">Estadística</div>
+                <div class="pc-nota">48.0</div>
+                <div class="pc-breakdown">P1 8 · P2 10 · Act 22 · Examen 8</div>
+                <span class="pc-badge pc-badge--red">✗ Reprobado</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- FORMULARIO -->
+        <section id="form-section">
+            <div class="section-header">
+                <div class="section-title">Agregar curso</div>
+                <div class="section-sub">Ajustá los puntos máximos según tu ingeniero. Dejá el examen vacío para activar
+                    el simulador.</div>
+            </div>
+
+            <div class="form-card">
+
+                <!-- Nombre -->
+                <div class="field-group">
+                    <label class="field-label" for="nombreCurso">Nombre del curso</label>
+                    <input class="field-input" type="text" id="nombreCurso" placeholder="Ej. Álgebra Lineal"
+                        autocomplete="off" />
+                </div>
+
+                <!-- Zona: parciales y actividades -->
+                <div class="form-divider">Zona — Parciales &amp; Actividades</div>
+
+                <div class="componentes-grid">
+                    <!-- Header -->
+                    <div class="componente-row header-row">
+                        <span>Componente</span>
+                        <span>Pts máx</span>
+                        <span>Nota obtenida</span>
+                    </div>
+
+                    <!-- 1er Parcial -->
+                    <div class="componente-row">
+                        <div class="comp-label">
+                            <span class="comp-label-dot dot--parcial"></span>
+                            1er Parcial
+                        </div>
+                        <div class="comp-max-wrap">
+                            <input class="field-input" type="number" id="max-parcial1" value="15" min="1" max="100"
+                                oninput="actualizarTotal()" />
+                            <span class="pts-suffix">pts</span>
+                        </div>
+                        <div class="comp-nota-wrap">
+                            <input class="field-input" type="number" id="nota-parcial1" placeholder="—" min="0"
+                                max="100" step="0.01" />
+                            <span class="pts-suffix">pts</span>
+                        </div>
+                    </div>
+
+                    <!-- 2do Parcial -->
+                    <div class="componente-row">
+                        <div class="comp-label">
+                            <span class="comp-label-dot dot--parcial"></span>
+                            2do Parcial
+                        </div>
+                        <div class="comp-max-wrap">
+                            <input class="field-input" type="number" id="max-parcial2" value="15" min="1" max="100"
+                                oninput="actualizarTotal()" />
+                            <span class="pts-suffix">pts</span>
+                        </div>
+                        <div class="comp-nota-wrap">
+                            <input class="field-input" type="number" id="nota-parcial2" placeholder="—" min="0"
+                                max="100" step="0.01" />
+                            <span class="pts-suffix">pts</span>
+                        </div>
+                    </div>
+
+                    <!-- Tareas -->
+                    <div class="componente-row">
+                        <div class="comp-label">
+                            <span class="comp-label-dot dot--actividad"></span>
+                            Tareas
+                        </div>
+                        <div class="comp-max-wrap">
+                            <input class="field-input" type="number" id="max-tareas" value="20" min="1" max="100"
+                                oninput="actualizarTotal()" />
+                            <span class="pts-suffix">pts</span>
+                        </div>
+                        <div class="comp-nota-wrap">
+                            <input class="field-input" type="number" id="nota-tareas" placeholder="—" min="0" max="100"
+                                step="0.01" />
+                            <span class="pts-suffix">pts</span>
+                        </div>
+                    </div>
+
+                    <!-- Proyecto de Curso -->
+                    <div class="componente-row">
+                        <div class="comp-label">
+                            <span class="comp-label-dot dot--actividad"></span>
+                            Proyecto de curso
+                        </div>
+                        <div class="comp-max-wrap">
+                            <input class="field-input" type="number" id="max-proyecto" value="15" min="1" max="100"
+                                oninput="actualizarTotal()" />
+                            <span class="pts-suffix">pts</span>
+                        </div>
+                        <div class="comp-nota-wrap">
+                            <input class="field-input" type="number" id="nota-proyecto" placeholder="—" min="0"
+                                max="100" step="0.01" />
+                            <span class="pts-suffix">pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total indicator -->
+                <div class="total-indicator">
+                    Zona máxima:
+                    <span class="total-pill" id="total-zona-pill">65 / 65 pts ✓</span>
+                </div>
+
+                <!-- Config: zona mínima y punteo mínimo -->
+                <div class="form-divider">Configuración del curso</div>
+                <div class="config-row">
+                    <div class="field-group">
+                        <label class="field-label" for="zonaMinima">
+                            Zona mínima para examen
+                            <span class="field-hint">— default 26</span>
+                        </label>
+                        <input class="field-input" type="number" id="zonaMinima" value="26" min="1" max="99" />
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="punteoMinimo">
+                            Punteo mínimo para aprobar
+                            <span class="field-hint">— default 61</span>
+                        </label>
+                        <input class="field-input" type="number" id="punteoMinimo" value="61" min="1" max="100" />
+                    </div>
+                </div>
+
+                <!-- Examen Final -->
+                <div class="form-divider">Examen Final</div>
+                <div class="examen-group">
+                    <div class="componente-row">
+                        <div class="comp-label">
+                            <span class="comp-label-dot dot--examen"></span>
+                            Examen Final
+                        </div>
+                        <div class="comp-max-wrap">
+                            <input class="field-input" type="number" id="max-examen" value="35" min="1" max="100"
+                                oninput="actualizarTotal()" />
+                            <span class="pts-suffix">pts</span>
+                        </div>
+                        <div class="comp-nota-wrap">
+                            <input class="field-input" type="number" id="nota-examen" placeholder="vacío = simular"
+                                min="0" max="100" step="0.01" />
+                            <span class="pts-suffix">pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edit-banner" id="edit-banner">
+                    <span style="display:flex;align-items:center;gap:7px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                        Editando curso — los cambios reemplazan el original
+                    </span>
+                    <button class="btn-cancel-edit" onclick="cancelarEdicion()">Cancelar</button>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-primary" type="button" onclick="agregarCurso()" id="btn-submit">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        <span id="btn-submit-txt">Agregar curso</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- LISTA DE CURSOS -->
+        <section id="cursos-section">
+            <div class="section-header">
+                <div class="section-row">
+                    <div class="section-title">Mis cursos</div>
+                    <span class="cursos-count" id="cursos-count">0 cursos</span>
+                </div>
+            </div>
+
+            <div class="cursos-empty" id="cursos-empty">
+                <div class="empty-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5a5a6a" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                        <polyline points="10 9 9 9 8 9" />
+                    </svg>
+                </div>
+                <p class="empty-text">Todavía no agregaste ningún curso.<br />Completá el formulario para empezar.</p>
+            </div>
+            <div class="cursos-lista" id="cursos-lista"></div>
+        </section>
+
+        <!-- RESUMEN -->
+        <section id="resumen-section" style="display:none;">
+            <div class="section-header">
+                <div class="section-title">Resumen del semestre</div>
+            </div>
+            <div class="resumen-grid">
+                <div class="resumen-card resumen-card--green">
+                    <div class="resumen-num" id="resumen-aprobados">0</div>
+                    <div class="resumen-label">Aprobados</div>
+                </div>
+                <div class="resumen-card resumen-card--red">
+                    <div class="resumen-num" id="resumen-reprobados">0</div>
+                    <div class="resumen-label">Reprobados</div>
+                </div>
+                <div class="resumen-card resumen-card--yellow">
+                    <div class="resumen-num" id="resumen-promedio">—</div>
+                    <div class="resumen-label">Promedio general</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>CalcNotas · Proyecto Final de Introducción a Sistemas I · <span id="footer-year"></span></p>
+    </footer>
+
+    <div class="toast-container" id="toast-container"></div>
+    <!--
+    <script>
+        'use strict';
+
+        /* ── ESTADO ──────────────────────────────────────────────── */
+        let cursos = [];
+        let editandoId = null;
+
+        /* ── INIT ────────────────────────────────────────────────── */
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('footer-year').textContent = new Date().getFullYear();
+            actualizarTotal();
+        });
+
+        /* ── HELPERS ─────────────────────────────────────────────── */
+        function redondear(n) { return Math.round(n * 100) / 100; }
+
+        function leerNum(id, defVal) {
+            const v = parseFloat(document.getElementById(id).value);
+            return isNaN(v) ? defVal : v;
+        }
+
+        function validarRango(val, min, max, etiqueta) {
+            if (isNaN(val) || val < min || val > max)
+                throw new Error(`"${etiqueta}" debe estar entre ${min} y ${max}.`);
+            return val;
+        }
+
+        function escapeHtml(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        /* ── ACTUALIZAR TOTAL ZONA ───────────────────────────────── */
+        function actualizarTotal() {
+            const zonaMax = leerNum('max-parcial1', 0) + leerNum('max-parcial2', 0)
+                + leerNum('max-tareas', 0) + leerNum('max-proyecto', 0);
+            const exMax = leerNum('max-examen', 0);
+            const total = zonaMax + exMax;
+
+            const pill = document.getElementById('total-zona-pill');
+            const isOk = total === 100;
+            pill.textContent = isOk ? `${zonaMax} + ${exMax} = 100 pts ✓` : `${zonaMax} + ${exMax} = ${total} pts (debe ser 100)`;
+            pill.className = 'total-pill ' + (isOk ? 'total-pill--ok' : 'total-pill--bad');
+        }
+
+        /* ── CALCULAR ESTADO ─────────────────────────────────────── */
+        function calcularEstado(comp, zonaMinima, punteoMinimo) {
+            const { p1, p2, tareas, proyecto, examen, maxP1, maxP2, maxTareas, maxProyecto, maxExamen } = comp;
+
+            const zonaObtenida = redondear(p1 + p2 + tareas + proyecto);
+            const zonaMax = maxP1 + maxP2 + maxTareas + maxProyecto;
+
+            // No llegó a zona mínima
+            if (zonaObtenida < zonaMinima) {
+                return { zonaObtenida, zonaMax, notaFinal: null, estado: 'sin-zona', necesita: null };
+            }
+
+            // Con examen
+            if (examen !== null) {
+                const notaFinal = redondear(zonaObtenida + examen);
+                return {
+                    zonaObtenida, zonaMax, notaFinal,
+                    estado: notaFinal >= punteoMinimo ? 'aprobado' : 'reprobado',
+                    necesita: null
+                };
+            }
+
+            // Simulador (sin examen)
+            const notaNecesaria = redondear(punteoMinimo - zonaObtenida);
+            if (notaNecesaria <= 0) return { zonaObtenida, zonaMax, notaFinal: null, estado: 'aprobado-zona', necesita: null };
+            if (notaNecesaria <= maxExamen) return { zonaObtenida, zonaMax, notaFinal: null, estado: 'simulador', necesita: notaNecesaria };
+            return { zonaObtenida, zonaMax, notaFinal: null, estado: 'imposible', necesita: null };
+        }
+
+        /* ── LEER Y VALIDAR FORM ─────────────────────────────────── */
+        function leerFormulario() {
+            const nombre = document.getElementById('nombreCurso').value.trim();
+            if (!nombre) throw new Error('Ingresá el nombre del curso.');
+
+            const maxP1 = validarRango(leerNum('max-parcial1', NaN), 1, 100, 'Pts máx — 1er Parcial');
+            const maxP2 = validarRango(leerNum('max-parcial2', NaN), 1, 100, 'Pts máx — 2do Parcial');
+            const maxTareas = validarRango(leerNum('max-tareas', NaN), 1, 100, 'Pts máx — Tareas');
+            const maxProyecto = validarRango(leerNum('max-proyecto', NaN), 1, 100, 'Pts máx — Proyecto');
+            const maxExamen = validarRango(leerNum('max-examen', NaN), 1, 100, 'Pts máx — Examen Final');
+
+            const total = maxP1 + maxP2 + maxTareas + maxProyecto + maxExamen;
+            if (total !== 100) throw new Error(`Los puntos máximos deben sumar 100. Actualmente suman ${total}.`);
+
+            const notaP1 = leerNota('nota-parcial1', maxP1, '1er Parcial');
+            const notaP2 = leerNota('nota-parcial2', maxP2, '2do Parcial');
+            const notaTareas = leerNota('nota-tareas', maxTareas, 'Tareas');
+            const notaProyecto = leerNota('nota-proyecto', maxProyecto, 'Proyecto de Curso');
+
+            const zonaMinima = validarRango(leerNum('zonaMinima', 26), 1, 99, 'Zona mínima');
+            const punteoMinimo = validarRango(leerNum('punteoMinimo', 61), 1, 100, 'Punteo mínimo');
+
+            const notaExamenEl = document.getElementById('nota-examen');
+            let notaExamen = null;
+            if (notaExamenEl.value !== '') {
+                notaExamen = parseFloat(notaExamenEl.value);
+                if (isNaN(notaExamen) || notaExamen < 0 || notaExamen > maxExamen)
+                    throw new Error(`La nota del examen debe estar entre 0 y ${maxExamen}.`);
+            }
+
+            const comp = {
+                p1: notaP1, p2: notaP2, tareas: notaTareas, proyecto: notaProyecto,
+                examen: notaExamen, maxP1, maxP2, maxTareas, maxProyecto, maxExamen
+            };
+            const { zonaObtenida, zonaMax, notaFinal, estado, necesita } =
+                calcularEstado(comp, zonaMinima, punteoMinimo);
+
+            return {
+                nombre, notaP1, notaP2, notaTareas, notaProyecto, notaExamen,
+                maxP1, maxP2, maxTareas, maxProyecto, maxExamen,
+                zonaObtenida, zonaMax, zonaMinima, punteoMinimo, notaFinal, estado, necesita
+            };
+        }
+
+        /* ── AGREGAR CURSO ───────────────────────────────────────── */
+        function agregarCurso() {
+            try {
+                const datos = leerFormulario();
+
+                if (editandoId !== null) {
+                    // Modo edición: reemplazar el curso existente
+                    cursos = cursos.map(c => c.id === editandoId ? { id: editandoId, ...datos } : c);
+                    mostrarToast(`"${datos.nombre}" actualizado.`, 'success');
+                    editandoId = null;
+                    document.getElementById('edit-banner').classList.remove('visible');
+                    document.getElementById('btn-submit-txt').textContent = 'Agregar curso';
+                } else {
+                    cursos.push({ id: Date.now(), ...datos });
+                    mostrarToast(`"${datos.nombre}" agregado.`, 'success');
+                }
+
+                renderizarCursos();
+                limpiarFormulario();
+
+            } catch (err) {
+                mostrarToast(err.message, 'error');
+            }
+        }
+
+        /* ── EDITAR CURSO ────────────────────────────────────────── */
+        function editarCurso(id) {
+            const c = cursos.find(x => x.id === id);
+            if (!c) return;
+
+            editandoId = id;
+
+            document.getElementById('nombreCurso').value = c.nombre;
+            document.getElementById('max-parcial1').value = c.maxP1;
+            document.getElementById('max-parcial2').value = c.maxP2;
+            document.getElementById('max-tareas').value = c.maxTareas;
+            document.getElementById('max-proyecto').value = c.maxProyecto;
+            document.getElementById('max-examen').value = c.maxExamen;
+            document.getElementById('nota-parcial1').value = c.notaP1;
+            document.getElementById('nota-parcial2').value = c.notaP2;
+            document.getElementById('nota-tareas').value = c.notaTareas;
+            document.getElementById('nota-proyecto').value = c.notaProyecto;
+            document.getElementById('nota-examen').value = c.notaExamen !== null ? c.notaExamen : '';
+            document.getElementById('zonaMinima').value = c.zonaMinima;
+            document.getElementById('punteoMinimo').value = c.punteoMinimo;
+
+            actualizarTotal();
+            document.getElementById('edit-banner').classList.add('visible');
+            document.getElementById('btn-submit-txt').textContent = 'Guardar cambios';
+            document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        /* ── CANCELAR EDICIÓN ────────────────────────────────────── */
+        function cancelarEdicion() {
+            editandoId = null;
+            document.getElementById('edit-banner').classList.remove('visible');
+            document.getElementById('btn-submit-txt').textContent = 'Agregar curso';
+            limpiarFormulario();
+        }
+
+        function leerNota(id, max, etiqueta) {
+            const el = document.getElementById(id);
+            if (el.value === '') throw new Error(`Ingresá la nota de "${etiqueta}".`);
+            const v = parseFloat(el.value);
+            if (isNaN(v) || v < 0 || v > max) throw new Error(`"${etiqueta}" debe estar entre 0 y ${max}.`);
+            return v;
+        }
+
+        /* ── ELIMINAR CURSO ──────────────────────────────────────── */
+        function eliminarCurso(id) {
+            const c = cursos.find(x => x.id === id);
+            cursos = cursos.filter(x => x.id !== id);
+            renderizarCursos();
+            if (c) mostrarToast(`"${c.nombre}" eliminado.`, 'error');
+        }
+
+        /* ── LIMPIAR FORM ────────────────────────────────────────── */
+        function limpiarFormulario() {
+            document.getElementById('nombreCurso').value = '';
+            ['nota-parcial1', 'nota-parcial2', 'nota-tareas', 'nota-proyecto', 'nota-examen']
+                .forEach(id => document.getElementById(id).value = '');
+            // reset max a defaults
+            document.getElementById('max-parcial1').value = 15;
+            document.getElementById('max-parcial2').value = 15;
+            document.getElementById('max-tareas').value = 20;
+            document.getElementById('max-proyecto').value = 15;
+            document.getElementById('max-examen').value = 35;
+            document.getElementById('zonaMinima').value = 26;
+            document.getElementById('punteoMinimo').value = 61;
+            actualizarTotal();
+        }
+
+        /* ── RENDERIZAR LISTA ────────────────────────────────────── */
+        function renderizarCursos() {
+            const lista = document.getElementById('cursos-lista');
+            const empty = document.getElementById('cursos-empty');
+            const count = document.getElementById('cursos-count');
+
+            lista.innerHTML = '';
+            count.textContent = `${cursos.length} curso${cursos.length !== 1 ? 's' : ''}`;
+
+            if (cursos.length === 0) {
+                empty.style.display = 'block';
+                lista.style.display = 'none';
+            } else {
+                empty.style.display = 'none';
+                lista.style.display = 'flex';
+                cursos.forEach(c => lista.appendChild(crearTarjeta(c)));
+            }
+            renderizarResumen();
+        }
+
+        /* ── CREAR TARJETA ───────────────────────────────────────── */
+        function crearTarjeta(c) {
+            const card = document.createElement('div');
+            card.className = `curso-card curso-card--${c.estado}`;
+
+            // badge y nota
+            const info = {
+                aprobado: { cls: 'badge--green', txt: '✓ Aprobado', notaCls: 'nota--aprobado', notaVal: c.notaFinal },
+                reprobado: { cls: 'badge--red', txt: '✗ Reprobado', notaCls: 'nota--reprobado', notaVal: c.notaFinal },
+                simulador: { cls: 'badge--yellow', txt: 'Examen sin ingresar', notaCls: 'nota--simulador', notaVal: '?' },
+                imposible: { cls: 'badge--red', txt: '✗ Imposible aprobar', notaCls: 'nota--imposible', notaVal: '✗' },
+                'sin-zona': { cls: 'badge--red', txt: '✗ Sin zona mínima', notaCls: 'nota--sin-zona', notaVal: '✗' },
+                'aprobado-zona': { cls: 'badge--green', txt: '✓ Aprobado sin examen', notaCls: 'nota--aprobado-zona', notaVal: '✓' },
+            }[c.estado];
+
+            const notaHtml = `<span class="curso-nota-final ${info.notaCls}">${info.notaVal}</span>`;
+            const badgeHtml = `<span class="badge ${info.cls}">${info.txt}</span>`;
+
+            // zona tag
+            const zonaOk = c.zonaObtenida >= c.zonaMinima;
+            const zonaTag = `<span class="zona-minima-tag zona-minima-tag--${zonaOk ? 'ok' : 'bad'}">${zonaOk ? '✓ zona ok' : `✗ mínimo ${c.zonaMinima}`}</span>`;
+
+            // mensaje simulador
+            let necesitaHtml = '';
+            if (c.estado === 'simulador')
+                necesitaHtml = `<p class="curso-necesita">Necesitás <strong>${c.necesita}</strong> pts en el examen para aprobar</p>`;
+            else if (c.estado === 'aprobado-zona')
+                necesitaHtml = `<p class="curso-necesita">Ya aprobás sin necesitar el examen</p>`;
+            else if (c.estado === 'imposible')
+                necesitaHtml = `<p class="curso-necesita">Ni con el examen completo se llega a ${c.punteoMinimo} pts</p>`;
+            else if (c.estado === 'sin-zona')
+                necesitaHtml = `<p class="curso-necesita">Zona de ${c.zonaObtenida} pts no llega al mínimo de ${c.zonaMinima} pts</p>`;
+
+            // examen chip
+            const examenChip = c.notaExamen !== null
+                ? `<span class="comp-chip"><span class="comp-chip-dot d--examen"></span> Examen <strong>${c.notaExamen}/${c.maxExamen}</strong></span>`
+                : '';
+
+            card.innerHTML = `
+        <div class="curso-card-main">
+          <div class="curso-nombre">${escapeHtml(c.nombre)}</div>
+          <div class="curso-breakdown">
+            <div class="curso-breakdown-group">
+              <span class="comp-chip"><span class="comp-chip-dot d--parcial"></span> P1 <strong>${c.notaP1}/${c.maxP1}</strong></span>
+              <span class="comp-chip"><span class="comp-chip-dot d--parcial"></span> P2 <strong>${c.notaP2}/${c.maxP2}</strong></span>
+              <span class="comp-chip"><span class="comp-chip-dot d--actividad"></span> Tareas <strong>${c.notaTareas}/${c.maxTareas}</strong></span>
+              <span class="comp-chip"><span class="comp-chip-dot d--actividad"></span> Proyecto <strong>${c.notaProyecto}/${c.maxProyecto}</strong></span>
+              ${examenChip}
+            </div>
+          </div>
+          <div class="zona-bar">
+            Zona: <span class="zona-score">${c.zonaObtenida} / ${c.zonaMax} pts</span>
+            ${zonaTag}
+          </div>
+        </div>
+        <div class="curso-card-right">
+          ${notaHtml}
+          ${badgeHtml}
+          ${necesitaHtml}
+          <div class="card-actions">
+            <button class="btn-editar" onclick="editarCurso(${c.id})" title="Editar curso">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn-eliminar" onclick="eliminarCurso(${c.id})" title="Eliminar curso">✕</button>
+          </div>
+        </div>
+      `;
+            return card;
+        }
+
+        /* ── RESUMEN ─────────────────────────────────────────────── */
+        function renderizarResumen() {
+            const sec = document.getElementById('resumen-section');
+            if (cursos.length === 0) { sec.style.display = 'none'; return; }
+            sec.style.display = 'block';
+
+            const aprobados = cursos.filter(c => c.estado === 'aprobado' || c.estado === 'aprobado-zona').length;
+            const reprobados = cursos.filter(c => ['reprobado', 'imposible', 'sin-zona'].includes(c.estado)).length;
+            const conNota = cursos.filter(c => c.notaFinal !== null);
+            const promedio = conNota.length
+                ? redondear(conNota.reduce((a, c) => a + c.notaFinal, 0) / conNota.length)
+                : '—';
+
+            document.getElementById('resumen-aprobados').textContent = aprobados;
+            document.getElementById('resumen-reprobados').textContent = reprobados;
+            document.getElementById('resumen-promedio').textContent = promedio;
+        }
+
+        /* ── TOAST ───────────────────────────────────────────────── */
+        function mostrarToast(msg, tipo) {
+            const t = document.createElement('div');
+            t.className = `toast toast--${tipo === 'success' ? 'success' : 'error'}`;
+            t.textContent = msg;
+            document.getElementById('toast-container').appendChild(t);
+            setTimeout(() => {
+                t.classList.add('toast--out');
+                t.addEventListener('animationend', () => t.remove());
+            }, 3200);
+        }
+    </script>-->
+    <script src="app.js"></script>
+</body>
+
+</html>
